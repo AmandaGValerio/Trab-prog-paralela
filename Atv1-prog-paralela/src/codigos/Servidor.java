@@ -1,10 +1,10 @@
 package codigos;
 
-public class Main {
+public class Servidor {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//resumirtodo trabalho aqui
+
 	}
 
 }
