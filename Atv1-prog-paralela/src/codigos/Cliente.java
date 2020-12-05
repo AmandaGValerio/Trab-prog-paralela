@@ -2,9 +2,12 @@
 
 package codigos;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 public class Cliente {
 	
@@ -17,6 +20,13 @@ public class Cliente {
 			System.out.println("Cliente conectado!");
 			
 			//enviar a imagem aqui
+			JFileChooser arq = new JFileChooser();
+			File f;
+			arq.showOpenDialog(null);
+	        f = arq.getSelectedFile();
+	        String foto = f.getAbsolutePath();
+	        
+			
 			
 			//fechando as conexoes
 			cliente.close();

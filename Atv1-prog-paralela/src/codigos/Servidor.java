@@ -2,6 +2,7 @@
 
 package codigos;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,6 +25,10 @@ public class Servidor {
 					cliente.getInetAddress().getHostAddress());
 			
 			// ler a imagem 
+			byte[] objectAsByte = new byte[cliente.getReceiveBufferSize()];
+	        BufferedInputStream bf = new BufferedInputStream(cliente.getInputStream());
+	        bf.read(objectAsByte);
+	        
 			
 			//dividir em 4 threads
 			
