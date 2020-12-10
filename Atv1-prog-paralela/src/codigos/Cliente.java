@@ -2,10 +2,14 @@
 
 package codigos;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -20,11 +24,14 @@ public class Cliente {
 			System.out.println("Cliente conectado!");
 			
 			//enviar a imagem aqui
-			JFileChooser arq = new JFileChooser();
-			File f;
-			arq.showOpenDialog(null);
-	        f = arq.getSelectedFile();
-	        String foto = f.getAbsolutePath();
+//			JFileChooser arq = new JFileChooser();
+//			File f;
+//			ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
+//			arq.showOpenDialog(null);
+//	        f = arq.getSelectedFile();
+//	        String foto = f.getAbsolutePath();
+	        
+	        BufferedImage imagem = ImageIO.read(new File("imagem.jpg"));
 	        
 			
 			
