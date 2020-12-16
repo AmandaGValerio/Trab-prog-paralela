@@ -3,7 +3,10 @@
 package codigos;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -30,8 +33,11 @@ public class Cliente {
 //			arq.showOpenDialog(null);
 //	        f = arq.getSelectedFile();
 //	        String foto = f.getAbsolutePath();
+			
+			BufferedInputStream arquivo = new BufferedInputStream(new FileInputStream("imagem.jpg"));
+			BufferedOutputStream sai = arquivo;
 	        
-	        BufferedImage imagem = ImageIO.read(new File("imagem.jpg"));
+//	        BufferedImage imagem = ImageIO.read(new File("imagem.jpg"));
 	        
 			
 			
