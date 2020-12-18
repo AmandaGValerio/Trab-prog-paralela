@@ -2,25 +2,30 @@ package codigos;
 
 import java.awt.image.BufferedImage;
 
-public class ConverterImg extends Thread{
-	private int altura;
-	private int largura;
+public class ConverterImg implements Runnable{
+	private int alturai;
+	private int alturaf;
+	private int largurai;
+	private int larguraf;
 	private BufferedImage imagem;
 
 	//conseguir fazer o retorno das partes da imagem
-	public ConverterImg(int altura, int largura, BufferedImage imagem) {
-		this.altura = altura;
-		this.largura = largura;
+	public ConverterImg(int alturai, int alturaf, int largurai, int larguraf, BufferedImage imagem) {
+		this.alturai = alturai;
+		this.largurai = largurai;
+		this.alturaf = alturaf;
+		this.larguraf = larguraf;
 		this.imagem = imagem;
 	}
 	@Override
 	public void run() {
 		BufferedImage processada = null;
-		for (int y = 0; y < this.altura; y++) {
-            for (int x = 0; x < this.largura; x++) {
+		for (int y = alturai; y < this.alturaf; y++) {
+            for (int x = largurai; x < this.larguraf; x++) {
                 int colorido = this.imagem.getRGB(x, y);
                 int cinza = escalaDeCinza(colorido);
 				processada.setRGB(x, y, cinza);
+				//conseguir retornar a imagem e juntar os pedaços
             }
         }
 		
