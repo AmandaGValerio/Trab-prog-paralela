@@ -22,49 +22,42 @@ import javax.imageio.ImageIO;
 public class Servidor{
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try {
 			//iniciando o servidor
 			ServerSocket servidor = new ServerSocket(8090);
-			System.out.println("Servidor em execução na porta 8090...");
-			System.out.println("Servidor aguardando requisições...");
+			System.out.println("Servidor na porta 8090 aguardando...");
 			
 			//esperando por uma conexao
 			Socket cliente = servidor.accept();
 			
 			//se uma conexão for estabelecida
-			System.out.println("Nova conexão estabelecida com o cliente " +
-					cliente.getInetAddress().getHostAddress());
+			System.out.println("Nova conexão " + cliente.getInetAddress().getHostAddress());
 			
 			// ler a imagem 			
-			int bytesRead;
-			int FILE_SIZE = 65536; //o tamanho deve ser suficiente para comportar o arquivo, já que o DO não funciona
-		    int current;
-		    FileOutputStream fos = null;
-		    BufferedOutputStream bos = null;
-		    System.out.println("entrei no try");
-			byte [] mybytearray  = new byte [FILE_SIZE];
-			InputStream is = cliente.getInputStream();
-			fos = new FileOutputStream("ima.jpg");
-			bos = new BufferedOutputStream(fos);
-			bytesRead = is.read(mybytearray, 0, mybytearray.length);
-			current = bytesRead;
-			System.out.println("input " + bytesRead + " atual " + current);
+			int lido, posAtual;
+		    FileOutputStream fsaida = null;
+		    BufferedOutputStream buffsaida = null;
+			byte [] imgBytes  = new byte [65536]; //tamanho máximo permitido
+			InputStream entrada = cliente.getInputStream();
+			fsaida = new FileOutputStream("ima.jpg");
+			buffsaida = new BufferedOutputStream(fsaida);
+			lido = entrada.read(imgBytes, 0, imgBytes.length);
+			posAtual = lido;
+			
 			//por algum motivo que eu não consegui descobrir, o DO começou a dar um loop infinito 
 			//e não está atualizando as variaveis internas 
-//			do {
-//				System.out.println("input " + bytesRead + " atual " + current);
-//				bytesRead = is.read(mybytearray, current, (mybytearray.length - current));
-//				if(bytesRead >= 0) { 
-//					current += bytesRead;
-//				}
-//			} while(bytesRead > -1);
-//			System.out.println("sai do try");
-//			bos.write(mybytearray, 0 , current);			
-			bos.write(mybytearray); 
-			bos.flush();
-			System.out.println("recebi");
 			
+//			do {
+//				System.out.println("input " + lido + " atual " + posAtual);
+//				lido = entrada.read(mybytearray, posAtual, (mybytearray.length - posAtual));
+//				if(lido >= 0) { 
+//					posAtual = posAtual + lido;
+//				}
+//			} while(lido > -1);
+//			bos.write(mybytearray, 0 , posAtual);	
+			
+			buffsaida.write(imgBytes); 
+			buffsaida.flush();	
 			
 //			esta linha serve apenas para testar o algoritmo		
 			BufferedImage imagem = ImageIO.read(new File("ima.jpg"));
@@ -77,8 +70,7 @@ public class Servidor{
 	        altMeio = altura/2;
 	        
 	        //definindo o tamanho da imagem de saída
-	        BufferedImage processada = new BufferedImage(largura, altura, BufferedImage.TYPE_INT_RGB);
-	                
+	        BufferedImage processada = new BufferedImage(largura, altura, BufferedImage.TYPE_INT_RGB);	                
 	        
 	        //dividir em 4 threads
 	        ConverterImg thread1 = new ConverterImg(0, altMeio, 0, larMeio, imagem, processada); 
@@ -96,28 +88,24 @@ public class Servidor{
 	        ImageIO.write(processada, "jpg", new File("pretobranco.jpg"));
 	        
 	        //retornar a imagem
-	        FileInputStream fis = null;
-		    BufferedInputStream bis = null;
-		    OutputStream os = null;
-			File myFile = new File ("pretobranco.jpg");
-			byte [] mybytearray1  = new byte [(int)myFile.length()];
-			fis = new FileInputStream(myFile);
-			bis = new BufferedInputStream(fis);
-			bis.read(mybytearray1,0,mybytearray1.length);
-			os = cliente.getOutputStream();
-			os.write(mybytearray1,0,mybytearray1.length);
-			os.flush();
-			System.out.println("Done2.");
+	        FileInputStream fentrada = null;
+		    BufferedInputStream buffentrada = null;
+		    OutputStream saida = null;
+			File arqDevolver = new File ("pretobranco.jpg");
+			byte [] imgBytesDev  = new byte [(int)arqDevolver.length()];
+			fentrada = new FileInputStream(arqDevolver);
+			buffentrada = new BufferedInputStream(fentrada);
+			buffentrada.read(imgBytesDev, 0, imgBytesDev.length);
+			saida = cliente.getOutputStream();
+			saida.write(imgBytesDev, 0, imgBytesDev.length);
 			
-			
-			
-			if (fos != null) fos.close();
-			if (bos != null) bos.close();
-			if (bis != null) bis.close();
-			if (os != null) os.close();
-	        
+			saida.flush();
 			
 			//fechando as conexoes
+			fsaida.close();
+			buffsaida.close();
+			buffentrada.close();
+			saida.close();        
 			servidor.close();
 			cliente.close();
 		}

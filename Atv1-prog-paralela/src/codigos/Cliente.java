@@ -19,7 +19,6 @@ import javax.imageio.ImageIO;
 public class Cliente {
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try {
 			//conectando no servidor
 			Socket cliente = new Socket("127.0.0.1", 8090);
@@ -27,52 +26,41 @@ public class Cliente {
 			System.out.println("Cliente conectado!");
 			
 			//enviar a imagem aqui	        
-			FileInputStream fis = null;
-		    BufferedInputStream bis = null;
-		    OutputStream os = null;
-			File myFile = new File ("imagem.jpg");
-			byte [] mybytearray  = new byte [(int)myFile.length()];
-			fis = new FileInputStream(myFile);
-			bis = new BufferedInputStream(fis);
-			bis.read(mybytearray,0,mybytearray.length);
-			os = cliente.getOutputStream();
-			os.write(mybytearray,0,mybytearray.length);
-			os.flush();
-			System.out.println("Done.");
-			
+			FileInputStream fentradaC = null;
+		    BufferedInputStream buffentradaC = null;
+		    OutputStream saidaC = null;
+			File arqEnviar = new File ("imagem.jpg");
+			byte [] mybytearray  = new byte [(int)arqEnviar.length()];
+			fentradaC = new FileInputStream(arqEnviar);
+			buffentradaC = new BufferedInputStream(fentradaC);
+			buffentradaC.read(mybytearray,0,mybytearray.length);
+			saidaC = cliente.getOutputStream();
+			saidaC.write(mybytearray,0,mybytearray.length);
+			saidaC.flush();		
 			
 			//recebendo a imagem
-			int bytesRead;
-			int FILE_SIZE = 72000; //o tamanho deve ser suficiente para comportar o arquivo, já que o DO não funciona
-		    int current;
-		    FileOutputStream fos = null;
-		    BufferedOutputStream bos = null;
-		    System.out.println("entrei no try");
-			byte [] mybytearray2  = new byte [FILE_SIZE];
-			InputStream is = cliente.getInputStream();
-			fos = new FileOutputStream("imagensResultantes/recebida.jpg");
-			bos = new BufferedOutputStream(fos);
-			bytesRead = is.read(mybytearray2, 0, mybytearray2.length);
-			current = bytesRead;
-			
-			//por algum motivo que eu não consegui descobrir, o DO começou a dar um loop infinito 
-			//e não está atualizando as variaveis internas 
-//			do {
-//				bytesRead = is.read(mybytearray2, current, (mybytearray2.length - current));
-//				if(bytesRead >= 0) { 
-//					current += bytesRead;
-//				}
-//			} while(bytesRead > -1);
-//			bos.write(mybytearray2, 0 , current);			
-			bos.write(mybytearray2); 
-			bos.flush();
-			System.out.println("recebi");
-			
+			int lidoC, posAtualC;
+		    FileOutputStream fsaida = null;
+		    BufferedOutputStream buffsaida = null;
+			byte [] imgBytesC  = new byte [65536]; //tamanho máximo permitido
+			InputStream entradaC = cliente.getInputStream();
+			fsaida = new FileOutputStream("imagensResultantes/recebida.jpg");
+			buffsaida = new BufferedOutputStream(fsaida);
+			lidoC = entradaC.read(imgBytesC, 0, imgBytesC.length);
+			posAtualC = lidoC;			
+			do {
+				lidoC = entradaC.read(imgBytesC, posAtualC, (imgBytesC.length - posAtualC));
+				if(lidoC >= 0) { 
+					posAtualC = posAtualC + lidoC;
+				}
+			} while(lidoC > -1);
+			buffsaida.write(imgBytesC, 0 , posAtualC);			
+			buffsaida.flush();		
 			
 			//fechando as conexoes
-			if (bis != null) bis.close();
-			if (os != null) os.close();
-			bos.close();
+			buffentradaC.close();
+			saidaC.close();
+			buffsaida.close();
 			cliente.close();
 		} 
 		catch (UnknownHostException e) {
