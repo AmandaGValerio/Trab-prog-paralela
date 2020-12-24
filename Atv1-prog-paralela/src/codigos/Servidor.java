@@ -66,10 +66,10 @@ public class Servidor{
 	                
 	        
 	        //dividir em 4 threads
-	        ConverterImg thread1 = new ConverterImg(0, altMeio, 0, larMeio, imagen); 
-	        ConverterImg thread2 = new ConverterImg(0, altMeio, larMeio, largura, imagen); 
-	        ConverterImg thread3 = new ConverterImg(altMeio, altura, 0, larMeio, imagen); 
-	        ConverterImg thread4 = new ConverterImg(altMeio, altura, larMeio, largura, imagen);  
+	        ConverterImg thread1 = new ConverterImg(0, altMeio, 0, larMeio, imagen, processada); 
+	        ConverterImg thread2 = new ConverterImg(0, altMeio, larMeio, largura, imagen, processada); 
+	        ConverterImg thread3 = new ConverterImg(altMeio, altura, 0, larMeio, imagen, processada); 
+	        ConverterImg thread4 = new ConverterImg(altMeio, altura, larMeio, largura, imagen, processada);  
 	        
 			//executar o algoritmo nas 4 threads ao mesmo tempo
 	        thread1.run();

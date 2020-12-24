@@ -8,24 +8,24 @@ public class ConverterImg implements Runnable{
 	private int largurai;
 	private int larguraf;
 	private BufferedImage imagem;
+	public BufferedImage processada;
 
 	//conseguir fazer o retorno das partes da imagem
-	public ConverterImg(int alturai, int alturaf, int largurai, int larguraf, BufferedImage imagem) {
+	public ConverterImg(int alturai, int alturaf, int largurai, int larguraf, BufferedImage imagem, BufferedImage processada) {
 		this.alturai = alturai;
 		this.largurai = largurai;
 		this.alturaf = alturaf;
 		this.larguraf = larguraf;
 		this.imagem = imagem;
+		this.processada = processada;
 	}
 	@Override
 	public void run() {
-		BufferedImage processada = null;
 		for (int y = alturai; y < this.alturaf; y++) {
             for (int x = largurai; x < this.larguraf; x++) {
                 int colorido = this.imagem.getRGB(x, y);
                 int cinza = escalaDeCinza(colorido);
 				processada.setRGB(x, y, cinza);
-				//conseguir retornar a imagem e juntar os pedaços
             }
         }
 		

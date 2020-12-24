@@ -35,7 +35,6 @@ public class Cliente {
 //	        String foto = f.getAbsolutePath();
 			
 			BufferedInputStream arquivo = new BufferedInputStream(new FileInputStream("imagem.jpg"));
-			BufferedOutputStream sai = arquivo;
 	        
 //	        BufferedImage imagem = ImageIO.read(new File("imagem.jpg"));
 	        
